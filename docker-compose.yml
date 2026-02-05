@@ -21,7 +21,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"
 
   # Django 應用
   web:
@@ -36,6 +36,7 @@ services:
       - redis
     environment:
       - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=config.settings.development
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/backend_toolkit
 
 volumes:
