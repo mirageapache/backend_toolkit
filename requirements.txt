@@ -1,0 +1,19 @@
+# Django 核心
+Django>=5.2,<6.0
+djangorestframework>=3.15.0
+
+# 資料庫驅動
+psycopg2-binary>=2.9.0  # PostgreSQL
+
+# CORS 支援
+django-cors-headers>=4.0.0
+
+# 環境變數管理
+python-decouple>=3.8
+
+# API 文檔
+drf-spectacular>=0.26.0
+
+# 其他常用套件
+python-dotenv>=1.0.0
+Pillow>=10.0.0  # 圖片處理
