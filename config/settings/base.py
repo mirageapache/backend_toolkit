@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     
-    # 專案應用 (之後可以在此註冊 apps.core 等)
+    # 專案應用
+    'apps.core',
 ]
 
 MIDDLEWARE = [
@@ -80,3 +81,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- 自定義例外處理 ---
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',
+}
