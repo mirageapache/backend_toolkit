@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     
     # 專案應用
     'apps.core',
+    'apps.mock_data',
 ]
 
 MIDDLEWARE = [

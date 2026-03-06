@@ -20,3 +20,6 @@ django-redis>=5.4.0
 # 其他常用套件
 python-dotenv>=1.0.0
 Pillow>=10.0.0  # 圖片處理
+
+# 模擬資料生成
+faker>=24.0.0
