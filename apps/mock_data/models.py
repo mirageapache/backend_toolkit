@@ -1,8 +1,10 @@
 from django.db import models
+
 from apps.core.models import BaseModel
 
 # Phase 2 的假資料是即時生成的，不需要存進資料庫
 # 這個檔案留給 Phase 3 的 CustomSchema 使用
+
 
 # 未來 Phase 3 會加入：
 class CustomSchema(BaseModel):
@@ -16,10 +18,10 @@ class CustomSchema(BaseModel):
     schema = models.JSONField(help_text="Faker 生成規則定義")
 
     class Meta:
-        db_table = 'mock_data_custom_schema' # 自訂資料表名稱
-        verbose_name = '自定義模板'
-        verbose_name_plural = '自定義模板'
-        ordering = ['-created_at']
+        db_table = "mock_data_custom_schema"  # 自訂資料表名稱
+        verbose_name = "自定義模板"
+        verbose_name_plural = "自定義模板"
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.name} ({self.id})"

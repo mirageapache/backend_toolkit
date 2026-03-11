@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-domain.com']
+ALLOWED_HOSTS = ["your-domain.com"]
 
 # 生產環境通常會透過環境變數讀取資料庫資訊
 # import dj_database_url
