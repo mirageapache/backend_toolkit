@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     
     # 第三方套件
     'rest_framework',
+    'drf_spectacular',
     'corsheaders',
     
     # 專案應用
@@ -86,4 +87,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --- 自定義例外處理 ---
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Backend Toolkit Mock API',
+    'DESCRIPTION': 'Mock Data生成引擎',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

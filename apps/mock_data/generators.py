@@ -15,11 +15,8 @@ class BaseGenerator:
     Faker.seed(0) # 固定seed，讓測試結果可重現
 
   def generate_multi(self, count=10):
-    """
-    生成指定數量的假資料
-    子類別必須實作這個方法
-    """
-    raise NotImplementedError("子類別必須實作 generate_multi() 方法")
+    """生成指定數量的假資料"""
+    return [self.generate_one() for _ in range(count)]
 
   def generate_one(self):
     """生成單筆假資料"""
@@ -93,3 +90,35 @@ class ProductGenerator(BaseGenerator):
     def generate_multi(self, count=10):
         """生成多筆商品資料"""
         return [self.generate_one() for _ in range(count)]
+
+class CustomGenerator(BaseGenerator):
+    """
+    自定義資料生成器
+    根據傳入的 schema 定義，動態呼叫 Faker 對應的方法來生成資料
+    """
+    def __init__(self, schema_definition, locale='zh_TW'):
+        super().__init__(locale=locale)
+        self.schema_definition = schema_definition
+
+    def generate_one(self):
+        """根據 schema_definition 生成單筆資料"""
+        result = {}
+        # 遍歷 schema 定義的每個欄位
+        for field_name, faker_method in self.schema_definition.items():
+            # 嘗試從 self.fake 中找到對應的方法，例如 faker_method 是 'uuid4'，就會找到 self.fake.uuid4
+            method = getattr(self.fake, faker_method, None)
+            
+            if method and callable(method):
+                try:
+                    # 執行該方法並將結果存入字典
+                    result[field_name] = method()
+                except Exception:
+                    # 如果執行失敗，填入錯誤提示
+                    result[field_name] = f"<Error executing {faker_method}>"
+            else:
+                # 如果 Faker 沒有這個方法，直接把字串當作預設值回傳
+                result[field_name] = faker_method
+                
+        return result
+
+    # 繼承父類別，generate_multi 已經幫我們實作好了！
