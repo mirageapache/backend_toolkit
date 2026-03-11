@@ -116,34 +116,52 @@ class CustomMockDataView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
             
-        # 1. 取得 count 與 locale 參數
+        # 取得 count 與 locale 參數
         count = request.query_params.get('count', 10)
         locale = request.query_params.get('locale', 'zh_TW')
         try:
             count = min(int(count), 100)
         except (ValueError, TypeError):
             count = 10
-        # 2. 從資料庫中找出指定的設定檔
+
+        # 產生 Cache Key (格式：custom_schema_UUID_count_locale)
+        cache_key = f"custom_schema_{schema_id}_{count}_{locale}"
+        
+        # 從 Redis 找
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            print(f"[Redis Hit] 從快取讀取自定義資料: {cache_key}")
+            return Response(cached_data, status=status.HTTP_200_OK)
+
+        print(f"[Redis Miss] 建立新的自定義資料: {cache_key}")
+
+        # 如果沒有，先去資料庫撈設定檔
         try:
             schema_obj = CustomSchema.objects.get(id=schema_id, is_active=True)
         except CustomSchema.DoesNotExist:
             raise NotFound("找不到指定的模板")
-        # 3. 實例化客製化生成器 (把資料庫裡的 schema 字典丟給它)
+        # 實例化客製化生成器 (把資料庫裡的 schema 字典丟給它)
         generator = CustomGenerator(
             schema_definition=schema_obj.schema, 
             locale=locale
         )
-        # 4. 生成資料
+        # 生成資料
         data = generator.generate_multi(count=count)
-        # 5. 分頁處理
+        # 分頁處理
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(data, request, view=self)
-        # 6. 回傳資料 
-        # (因為是動態結構，我們不需要、也無法使用 Serializer，直接回傳即可)
+
+        # 抽出最終回傳的字典資料
         if page is not None:
-            return paginator.get_paginated_response(page)
+             response_data = paginator.get_paginated_response(page).data
+        else:
+             response_data = data
+             
+        # 寫入 Redis
+        cache.set(cache_key, response_data, timeout=60)
             
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(response_data, status=status.HTTP_200_OK)
+    
     
     def post(self, request, *args, **kwargs):
         """處理前端直接傳遞 JSON schema 來即時生成資料的請求"""
