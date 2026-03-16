@@ -2,13 +2,13 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-domain.com']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "web"]
 
-# 生產環境通常會透過環境變數讀取資料庫資訊
-# import dj_database_url
-# DATABASES['default'] = dj_database_url.config()
+# 靜態檔案路徑 (供 Nginx 使用)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# 安全性設定
-SECURE_SSL_REDIRECT = True
+# 安全性設定 (本地測試暫時關閉 SSL 強制導向)
+SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+

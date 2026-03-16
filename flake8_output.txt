@@ -1,0 +1,14 @@
+﻿./apps/core/exceptions.py:1:1: F401 'rest_framework.status' imported but unused
+./apps/core/exceptions.py:2:1: F401 'rest_framework.response.Response' imported but unused
+./apps/core/tests/test_mixins.py:2:1: F401 'django.utils.timezone' imported but unused
+./apps/core/tests/test_mixins.py:4:1: F401 'apps.core.mixins.TimestampMixin' imported but unused
+./apps/mock_data/tests/test_integration.py:8:1: F401 'apps.mock_data.models.CustomSchema' imported but unused
+./scripts/verify_environment.py:16:1: F401 'django.conf.settings' imported but unused
+./scripts/verify_environment.py:16:1: E402 module level import not at top of file
+./scripts/verify_environment.py:17:1: E402 module level import not at top of file
+./scripts/verify_environment.py:18:1: E402 module level import not at top of file
+./tests/test_redis.py:16:1: E402 module level import not at top of file
+./tests/test_redis.py:17:1: E402 module level import not at top of file
+./tests/test_redis.py:65:19: F541 f-string is missing placeholders
+./tests/test_redis.py:83:19: F541 f-string is missing placeholders
+./tests/test_redis.py:85:19: F541 f-string is missing placeholders
